@@ -1,0 +1,50 @@
+modLoader = "javafml"
+loaderVersion = "${loader_version_range}"
+license = "${mod_license}"
+
+[[mods]]
+    modId = "${mod_id}"
+    version = "${mod_version}"
+    displayName = "${mod_name}"
+    description = '''${mod_description}'''
+    authors = "${mod_authors}"
+
+[[mixins]]
+    config = "${mod_id}.mixins.json"
+
+[[dependencies.${mod_id}]]
+    modId = "neoforge"
+    type = "required"
+    versionRange = "${neo_version}"
+    ordering = "NONE"
+    side = "BOTH"
+
+[[dependencies.${mod_id}]]
+    modId = "minecraft"
+    type = "required"
+    versionRange = "${minecraft_version}"
+    ordering = "NONE"
+    side = "BOTH"
+
+# Optional: Applied Energistics 2
+[[dependencies.${mod_id}]]
+    modId = "ae2"
+    type = "optional"
+    versionRange = "${ae2_version}"
+    ordering = "NONE"
+    side = "BOTH"
+
+# Optional: Mystical Agriculture
+[[dependencies.${mod_id}]]
+    modId = "mysticalagriculture"
+    type = "optional"
+    versionRange = "${mystical_agriculture_version}"
+    ordering = "NONE"
+    side = "BOTH"
+
+    [[dependencies.${mod_id}]]
+    modId = "cucumber"
+    type = "optional"
+    versionRange = "${cucumber_version}"
+    ordering = "NONE"
+    side = "BOTH"
