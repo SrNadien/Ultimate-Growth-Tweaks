@@ -1,73 +1,106 @@
-## 🌱 Ultimate Growth Tweak
+# Ultimate Growth Tweak
+**Minecraft 1.21.1 · NeoForge 21.1.215**
 
-A lightweight, server-friendly farming quality-of-life mod for **NeoForge 1.21.1** with three fully independent and configurable features.
-
----
-
-### ✂️ Right-Click Harvest
-
-Right-click any fully-grown crop to harvest it and **automatically replant** — no breaking required.
-
-- Works with all vanilla crops (wheat, carrot, potato, beetroot, nether wart) and any modded crop extending `CropBlock`
-- Drops all produce normally, keeps one seed for replanting
-- Per-block **blacklist** to exclude specific crops
+A highly configurable farming quality-of-life mod with three main features:
 
 ---
 
-### 🕺 Squat to Grow *(Twerk)*
+## Features
 
-Crouch repeatedly near your farm to send growth ticks to surrounding crops and plants.
+### 1. Right-Click Harvest
+Right-click a fully-grown crop to harvest it and automatically replant.
+- Works with all `CropBlock` subclasses (vanilla + mods)
+- Per-block blacklist in config
 
-- Press **N** to toggle the feature on/off per player (shown in the action bar)
-- Requires a configurable number of **squats** before triggering (default: **3**)
-- Costs **hunger** per activation (default: 1 shank — or disable it entirely)
-- Configurable **area**: from **3×3** up to **21×21** blocks
-- Only grows actual crops and plant shoots — **never spawns flowers or grass decorations**
-- Whitelist or blacklist mode for fine-grained block control
-- Optional held item requirement with durability damage support
-- Adventure mode support (configurable)
+### 2. Squat / Twerk to Grow *(Shift to grow plants)*
+Press Shift while on the ground to send growth ticks to all growable blocks in a configurable radius.
+- Configurable chance, range, and tick multipliers
+- Sugar cane gets its own separate multiplier
+- Dirt → Grass conversion when holding a grass block in your offhand
+- Optional adventure mode support
+- Whitelist **or** blacklist mode for blocks
+- Requirements system: require a specific held item (with optional durability damage)
+- AE2 and Mystical Agriculture integration (see below)
 
-#### What grows:
-Wheat · Carrot · Potato · Beetroot · Nether Wart · Sugar Cane · Cactus · Melon & Pumpkin Stems · Tree Saplings · Bamboo · Kelp · Twisting & Weeping Vines
-
-#### What never grows:
-Short Grass · Tall Grass · Ferns · Flowers · Decorative Plants
-
----
-
-### 🌾 Crop Trample Protection
-
-Prevents farmland from being destroyed and crops from breaking when jumped on.
-
-- **Enabled by default** — your farms are safe out of the box
-- Option to protect only from **players**, letting mobs still trample
-- Option to protect from **all entities**
+### 3. Crop Trample Protection
+Prevents farmland from being trampled and crops from breaking when jumped on.
+- Enabled by default
+- Can be restricted to player-only trampling (letting mobs still trample)
 
 ---
 
-### 🔌 Mod Integration
+## Configuration
+Config file: `config/ultimategrowthtweak-common.toml`
 
-| Mod | How |
-|-----|-----|
-| **Applied Energistics 2** | Blocks tagged `ae2:growth_acceleratable` receive a configurable extra tick multiplier |
-| **Mystical Agriculture** | Crops tagged `mysticalagriculture:crops` grow via the proper MA growth method |
+### Right-Click Harvest
+| Key | Default | Description |
+|-----|---------|-------------|
+| `enableRightClickHarvest` | `true` | Enable the feature |
+| `harvestBlacklist` | `["minecraft:sweet_berry_bush"]` | Blocks that must NOT be right-click harvested |
 
-Both are **soft dependencies** — the mod works without either installed.
+### Twerk
+| Key | Default | Description |
+|-----|---------|-------------|
+| `enableTwerk` | `true` | Enable the feature |
+| `chance` | `1.0` | Per-block growth chance (0.0–1.0) |
+| `range` | `16` | Radius in blocks |
+| `randomTickMultiplier` | `4` | Extra random ticks per twerk |
+| `sugarcaneMultiplier` | `4` | Extra ticks for sugar cane specifically |
+| `allowAdventureTwerking` | `true` | Allow Adventure mode players |
+| `enableDirtToGrass` | `true` | Convert dirt to grass when holding grass block |
+| `useWhitelist` | `false` | If true, `ignoreList` becomes a whitelist |
+| `ignoreList` | `[]` | Blacklist (or whitelist) of block IDs |
+| `debug` | `false` | Verbose log output |
+
+### Twerk Requirements
+| Key | Default | Description |
+|-----|---------|-------------|
+| `enabled` | `false` | Enable the requirements system |
+| `heldItemRequirement` | `[]` | Items that must be held (e.g. `["minecraft:bone_meal"]`) |
+| `requiredItemTakesDamage` | `false` | Does the item lose durability? |
+| `durabilityDamage` | `1` | How much durability per twerk |
+
+### Integrations
+| Key | Default | Description |
+|-----|---------|-------------|
+| `enableAE2Accelerator` | `true` | AE2 growth acceleration support |
+| `ae2Multiplier` | `4` | AE2 growth multiplier |
+| `enableMysticalCrops` | `true` | Mystical Agriculture crop support |
+
+### Trample Protection
+| Key | Default | Description |
+|-----|---------|-------------|
+| `preventCropTrample` | `true` | Prevent crop trampling |
+| `trampleOnlyPlayers` | `false` | If true, only block player trampling (mobs can still trample) |
 
 ---
 
-### ⚙️ Configuration
+## Building
 
-All features are controlled via `config/ultimategrowthtweak-common.toml`.
+```bash
+# Standard build
+./gradlew build
 
-| Feature | Key option | Default |
-|---------|-----------|---------|
-| Right-click harvest | `enableRightClickHarvest` | `true` |
-| Harvest blacklist | `harvestBlacklist` | `[sweet_berry_bush]` |
-| Squat to grow | `enableTwerk` | `true` |
-| Squats required | `twerksRequired` | `3` (1–10) |
-| Food cost | `consumeFood` / `foodCost` | `true` / `2` pts |
-| Area radius | `range` | `1` = 3×3 (max 10 = 21×21) |
-| Trample protection | `preventCropTrample` | `true` |
-| AE2 multiplier | `ae2Multiplier` | `4` |
-| Mystical Agriculture | `enableMysticalCrops` | `true` |
+# With AE2 integration compiled in
+./gradlew build -Penable_ae2=true
+
+# With Mystical Agriculture integration compiled in
+./gradlew build -Penable_mystical_agriculture=true
+```
+
+Output JAR: `build/libs/ultimategrowthtweak-1.21.1-1.0.0.jar`
+
+---
+
+## Mod Integration Notes
+
+### Applied Energistics 2
+The AE2 integration is a **soft dependency** — the mod works without AE2 installed. The `AE2Integration.java` class is only called when AE2 is detected at runtime. If you compile with `enable_ae2=true`, you can replace the stub in `AE2Integration.applyMultiplier()` with real AE2 Growth Accelerator API calls.
+
+### Mystical Agriculture
+Same pattern — soft dependency, class-name based detection at runtime. Replace the stub in `MysticalAgricultureIntegration.isMysticalCrop()` with the real MA API when compiling with it.
+
+---
+
+## License
+MIT
